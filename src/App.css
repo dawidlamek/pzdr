@@ -1,0 +1,114 @@
+/* Resetowanie domyœlnych stylów przegl¹darki */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+nav {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+}
+
+    nav ul {
+        list-style: none;
+        display: flex;
+        justify-content: space-around;
+    }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+            nav ul li a {
+                color: #fff;
+                text-decoration: none;
+            }
+
+                nav ul li a:hover {
+                    text-decoration: underline;
+                }
+
+            nav ul li button {
+                background: none;
+                border: none;
+                color: #fff;
+                cursor: pointer;
+                font: inherit;
+            }
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    margin-bottom: 1rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+    form label {
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    form input, form select, form button {
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    form button {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+
+        form button:hover {
+            background-color: #555;
+        }
+
+ul {
+    list-style: none;
+}
+
+    ul li {
+        padding: 0.5rem;
+        border-bottom: 1px solid #ccc;
+    }
+
+        ul li button {
+            margin-left: 1rem;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid #333;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+            ul li button:hover {
+                background-color: #333;
+                color: #fff;
+            }
+
+.error {
+    color: red;
+    margin-bottom: 1rem;
+}
