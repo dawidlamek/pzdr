@@ -1,6 +1,35 @@
 const API_URL = 'http://localhost:8080';
 
-// Funkcje do komunikacji z backendem
+export const login = async (username, password) => {
+    const response = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+        credentials: 'include' // Ensure credentials are included
+    });
+
+    if (!response.ok) {
+        throw new Error('Login failed');
+    }
+
+    return await response.json();
+};
+
+export const getInventory = async () => {
+    const response = await fetch(`${API_URL}/inventory`, {
+        credentials: 'include'
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch inventory');
+    }
+
+    return await response.json();
+};
+
+/// WORKING
 
 export const getServiceOrders = async () => {
     const response = await fetch(`${API_URL}/service/orders`);
@@ -35,18 +64,7 @@ export const getInvoice = async (orderId) => {
     return await response.json();
 };
 
-export const getInventory = async () => {
-    try {
-        const response = await fetch(`${API_URL}/inventory`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching inventory:', error);
-        throw error;
-    }
-};
+
 
 export const addPart = async (part) => {
     const response = await fetch(`${API_URL}/inventory`, {

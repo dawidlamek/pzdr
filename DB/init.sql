@@ -41,21 +41,18 @@ CREATE TABLE appointments (
     FOREIGN KEY (client_id) REFERENCES users(id)
 );
 
-CREATE TABLE margins (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    category VARCHAR(100) NOT NULL,
-    margin DECIMAL(5, 2) NOT NULL
-);
+-- Insert roles
+INSERT INTO roles (name) VALUES ('admin');
+INSERT INTO roles (name) VALUES ('serwis');
+INSERT INTO roles (name) VALUES ('klient');
 
--- Insert data into tables
-INSERT INTO roles (name) VALUES ('admin'), ('serwis'), ('klient');
-
+-- Insert users with hashed passwords
 INSERT INTO users (username, password, role_id) VALUES 
-('admin1', 'password1', 1),
-('service1', 'password2', 2),
-('service2', 'password3', 2),
-('client1', 'password4', 3),
-('client2', 'password5', 3);
+('admin1', '$2a$10$19e.vSWE4Im3UfoqP7JVJuV4O0UD4uX50tShjACS6FW5KI6P6YLXm', 1), -- 'password1'
+('service1', '$2a$10$0hp2C7Jurq/BjE311qsl.eKYPhDdvo0K9.8sZjKT/rKzlvAeRZEEO', 2), -- 'password2'
+('client1', '$2a$10$yCHwKsp7ANhkoHj98eR4nOkK43R9AJDCrqADAKZINGfKhNHA83OM.', 3); -- 'password3'
+
+-- Passwords are hashed versions of 'password1', 'password2', and 'password3' respectively.
 
 INSERT INTO parts (name, quantity, price) VALUES 
 ('Klocki hamulcowe', 100, 25.50),
@@ -70,8 +67,3 @@ INSERT INTO orders (description, status, user_id) VALUES
 INSERT INTO appointments (client_id, date, time) VALUES 
 (4, '2024-06-20', '10:00:00'),
 (5, '2024-06-21', '14:00:00');
-
-INSERT INTO margins (category, margin) VALUES 
-('Klocki hamulcowe', 15.00),
-('Filtr oleju', 10.00),
-('Filtr powietrza', 12.50);
