@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 
-// Przyk³adowi u¿ytkownicy
+// Przykï¿½adowi uï¿½ytkownicy
 const users = [
     { username: 'admin1', password: 'password1', role: 'admin' },
     { username: 'service1', password: 'password2', role: 'service' },

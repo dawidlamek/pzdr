@@ -1,4 +1,4 @@
-const API_URL = 'https://localhost:8080/api';
+const API_URL = 'http://localhost:8080';
 
 // Funkcje do komunikacji z backendem
 
@@ -36,8 +36,16 @@ export const getInvoice = async (orderId) => {
 };
 
 export const getInventory = async () => {
-    const response = await fetch(`${API_URL}/inventory`);
-    return await response.json();
+    try {
+        const response = await fetch(`${API_URL}/inventory`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching inventory:', error);
+        throw error;
+    }
 };
 
 export const addPart = async (part) => {

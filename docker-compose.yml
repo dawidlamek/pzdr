@@ -1,6 +1,22 @@
 version: '3.8'
 
 services:
+
+  db:
+    build:
+      context: ./DB
+      dockerfile: Dockerfile 
+    container_name: car_service_db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: car_service
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
   frontend:
     build:
       context: ./FE
@@ -26,15 +42,7 @@ services:
     depends_on:
       - db
 
-  db:
-    build:
-      context: ./DB
-      dockerfile: Dockerfile 
-    container_name: car_service_db
-    ports:
-      - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
+
 
 volumes:
   db_data:
