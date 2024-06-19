@@ -1,4 +1,4 @@
-const API_URL = 'https://your-api-url.com';
+const API_URL = 'https://localhost:8080/api';
 
 // Funkcje do komunikacji z backendem
 
@@ -86,7 +86,7 @@ export const deleteUser = async (userId) => {
     await fetch(`${API_URL}/users/${userId}`, { method: 'DELETE' });
 };
 
-// Dodajemy brakuj¹ce funkcje
+// Dodajemy brakujï¿½ce funkcje
 export const getMargins = async () => {
     const response = await fetch(`${API_URL}/margins`);
     return await response.json();

@@ -3,7 +3,7 @@ import { getInventory, addPart, updatePartQuantity } from '../services/api';
 
 const Inventory = () => {
     const [inventory, setInventory] = useState([]);
-    const [newPart, setNewPart] = useState({ name: '', quantity: 0 });
+    const [newPart, setNewPart] = useState({ name: '', quantity: 0 ,price: 0});
 
     useEffect(() => {
         // Fetch inventory data from the backend
@@ -14,7 +14,7 @@ const Inventory = () => {
         e.preventDefault();
         addPart(newPart).then(part => {
             setInventory([...inventory, part]);
-            setNewPart({ name: '', quantity: 0 });
+            setNewPart({ name: '', quantity: 0 ,price: 0});
         });
     };
 
@@ -42,6 +42,14 @@ const Inventory = () => {
                         type="number"
                         value={newPart.quantity}
                         onChange={(e) => setNewPart({ ...newPart, quantity: Number(e.target.value) })}
+                    />
+                </label>
+                <label>
+                    Price:
+                    <input
+                        type="float"
+                        value={newPart.price}
+                        onChange={(e) => setNewPart({ ...newPart, price: Number(e.target.value) })}
                     />
                 </label>
                 <button type="submit">Add Part</button>
