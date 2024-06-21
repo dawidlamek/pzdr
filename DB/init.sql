@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS appointments;
 DROP TABLE IF EXISTS parts;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS orders;
 
 -- Create tables
 CREATE TABLE roles (
@@ -40,6 +41,16 @@ CREATE TABLE appointments (
     FOREIGN KEY (client_id) REFERENCES users(id)
 );
 
+CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    description VARCHAR(255) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    user_id INT,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 -- Insert roles
 INSERT INTO roles (name) VALUES ('admin'), ('serwis'), ('klient');
 
@@ -56,6 +67,12 @@ INSERT INTO parts (name, quantity, price) VALUES
 ('Filtr powietrza', 200, 15.00);
 
 -- Insert appointments (make sure client IDs match existing user IDs)
-INSERT INTO appointments (client_id, date, time) VALUES 
-(3, '2024-06-20 10:00:00', '10:00:00'), -- client1
-(3, '2024-06-21 14:00:00', '14:00:00'); -- client1
+INSERT INTO appointments (client_id, date, time, created_at, updated_at) VALUES 
+(3, '2024-06-20 10:00:00', '10:00:00', NOW(), NOW()), -- client1
+(3, '2024-06-21 14:00:00', '14:00:00', NOW(), NOW()); -- client1
+
+-- Insert orders
+INSERT INTO orders (description, status, user_id, created_at, updated_at) VALUES 
+('Order 1 description', 'zlecenie', 1, NOW(), NOW()), -- admin1
+('Order 2 description', 'serwis', 2, NOW(), NOW()), -- service1
+('Order 3 description', 'magazyn', 3, NOW(), NOW()); -- client1

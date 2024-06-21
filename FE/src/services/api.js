@@ -7,7 +7,7 @@ export const login = async (username, password) => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password }),
-        credentials: 'include' // Ensure credentials are included
+        credentials: 'include'
     });
 
     if (!response.ok) {
@@ -36,7 +36,7 @@ export const addPart = async (part) => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(part),
-        credentials: 'include' // Include credentials in the request
+        credentials: 'include'
     });
 
     if (!response.ok) {
@@ -53,7 +53,7 @@ export const updatePartQuantity = async (partId, quantity) => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ quantity }),
-        credentials: 'include' // Include credentials in the request
+        credentials: 'include'
     });
 
     if (!response.ok) {
@@ -65,7 +65,7 @@ export const updatePartQuantity = async (partId, quantity) => {
 
 export const getAppointments = async () => {
     const response = await fetch(`${API_URL}/appointments`, {
-        credentials: 'include' // Ensure credentials are included
+        credentials: 'include'
     });
     if (!response.ok) {
         throw new Error('Failed to fetch appointments');
@@ -78,7 +78,7 @@ export const scheduleAppointment = async (appointment) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(appointment),
-        credentials: 'include' // Ensure credentials are included
+        credentials: 'include'
     });
     if (!response.ok) {
         throw new Error('Failed to schedule appointment');
@@ -86,10 +86,13 @@ export const scheduleAppointment = async (appointment) => {
     return await response.json();
 };
 
-/// WORKING
-
-export const getServiceOrders = async () => {
-    const response = await fetch(`${API_URL}/service/orders`);
+export const getOrders = async () => {
+    const response = await fetch(`${API_URL}/orders`, {
+        credentials: 'include'
+    });
+    if (!response.ok) {
+        throw new Error('Failed to fetch orders');
+    }
     return await response.json();
 };
 
@@ -98,54 +101,23 @@ export const updateOrderStatus = async (orderId, status) => {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
+        credentials: 'include'
     });
+    if (!response.ok) {
+        throw new Error('Failed to update order status');
+    }
     return await response.json();
 };
 
-export const getClientOrders = async () => {
-    const response = await fetch(`${API_URL}/client/orders`);
-    return await response.json();
-};
-
-export const getInvoice = async (orderId) => {
-    const response = await fetch(`${API_URL}/orders/${orderId}/invoice`);
-    return await response.json();
-};
-
-export const getOrders = async () => {
-    const response = await fetch(`${API_URL}/orders`);
-    return await response.json();
-};
-
-export const getUsers = async () => {
-    const response = await fetch(`${API_URL}/users`);
-    return await response.json();
-};
-
-export const updateUserRole = async (userId, role) => {
-    const response = await fetch(`${API_URL}/users/${userId}`, {
-        method: 'PUT',
+export const createOrder = async (order) => {
+    const response = await fetch(`${API_URL}/orders`, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ role }),
+        body: JSON.stringify(order),
+        credentials: 'include'
     });
-    return await response.json();
-};
-
-export const deleteUser = async (userId) => {
-    await fetch(`${API_URL}/users/${userId}`, { method: 'DELETE' });
-};
-
-// Dodajemy brakuj�ce funkcje
-export const getMargins = async () => {
-    const response = await fetch(`${API_URL}/margins`);
-    return await response.json();
-};
-
-export const updateMargin = async (category, margin) => {
-    const response = await fetch(`${API_URL}/margins/${category}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ margin }),
-    });
+    if (!response.ok) {
+        throw new Error('Failed to create order');
+    }
     return await response.json();
 };

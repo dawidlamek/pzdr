@@ -1,26 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import UserManagement from './UserManagement';
-import { getMargins, updateMargin } from '../services/api';
 
 const AdminPanel = () => {
     const [margins, setMargins] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [newMargin, setNewMargin] = useState('');
 
-    useEffect(() => {
-        // Fetch margins data from the backend
-        getMargins().then(data => setMargins(data));
-    }, []);
+    // useEffect(() => {
+    //     // Fetch margins data from the backend
+    //     getMargins().then(data => setMargins(data));
+    // }, []);
 
     const handleUpdateMargin = (e) => {
-        e.preventDefault();
-        updateMargin(selectedCategory, newMargin).then(updatedMargin => {
-            setMargins(margins.map(margin =>
-                margin.category === selectedCategory ? updatedMargin : margin
-            ));
-            setSelectedCategory('');
-            setNewMargin('');
-        });
+        // e.preventDefault();
+        // updateMargin(selectedCategory, newMargin).then(updatedMargin => {
+        //     setMargins(margins.map(margin =>
+        //         margin.category === selectedCategory ? updatedMargin : margin
+        //     ));
+        //     setSelectedCategory('');
+        //     setNewMargin('');
+        // });
     };
 
     return (

@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { getUsers, updateUserRole, deleteUser } from '../services/api';
+import React, { useState, useEffect } from 'react';;
 
 const UserManagement = () => {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
         // Fetch users data from the backend
-        getUsers().then(data => setUsers(data));
+        // getUsers().then(data => setUsers(data));
     }, []);
 
     const handleUpdateRole = (userId, role) => {
-        updateUserRole(userId, role).then(updatedUser => {
+/*         updateUserRole(userId, role).then(updatedUser => {
             setUsers(users.map(user => (user.id === userId ? updatedUser : user)));
-        });
+        }); */
     };
 
     const handleDeleteUser = (userId) => {
-        deleteUser(userId).then(() => {
-            setUsers(users.filter(user => user.id !== userId));
-        });
+        // deleteUser(userId).then(() => {
+        //     setUsers(users.filter(user => user.id !== userId));
+        // });
     };
 
     return (

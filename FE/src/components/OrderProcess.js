@@ -1,25 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { getOrders} from '../services/api';
+import { getOrders, createOrder } from '../services/api';
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
-    const [newOrder, setNewOrder] = useState({ description: '', status: '', userId: '' });
+    const [newOrder, setNewOrder] = useState({ description: '', status: 'zlecenie', userId: '' });
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
 
     useEffect(() => {
-        getOrders().then(data => setOrders(data));
+        getOrders()
+            .then(data => setOrders(data))
+            .catch(err => setError(err.message));
     }, []);
 
     const handleCreateOrder = (e) => {
-        // e.preventDefault();
-        // createOrder(newOrder).then(order => {
-        //     setOrders([...orders, order]);
-        //     setNewOrder({ description: '', status: '', userId: '' });
-        // });
+        e.preventDefault();
+        createOrder(newOrder)
+            .then(order => {
+                setOrders([...orders, order]);
+                setNewOrder({ description: '', status: 'zlecenie', userId: '' });
+                setError(null);
+                setSuccess('Order created successfully');
+            })
+            .catch(err => {
+                setSuccess(null);
+                setError(err.message);
+            });
     };
 
     return (
         <div>
             <h1>Orders</h1>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {success && <p style={{ color: 'green' }}>{success}</p>}
             <form onSubmit={handleCreateOrder}>
                 <label>
                     Description:
@@ -40,9 +53,9 @@ const Orders = () => {
                 <label>
                     User ID:
                     <input
-                        type="text"
+                        type="number"
                         value={newOrder.userId}
-                        onChange={(e) => setNewOrder({ ...newOrder, userId: e.target.value })}
+                        onChange={(e) => setNewOrder({ ...newOrder, userId: parseInt(e.target.value, 10) })}
                     />
                 </label>
                 <button type="submit">Create Order</button>
@@ -50,7 +63,7 @@ const Orders = () => {
             <ul>
                 {orders.map(order => (
                     <li key={order.id}>
-                        {order.description} - Status: {order.status} - User ID: {order.userId}
+                        {order.description} - Status: {order.status} - User ID: {order.user_id}
                     </li>
                 ))}
             </ul>

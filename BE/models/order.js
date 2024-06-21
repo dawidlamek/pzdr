@@ -1,21 +1,22 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const Appointment = sequelize.define('Appointment', {
+  const Order = sequelize.define('Order', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    date: {
-      type: DataTypes.DATE,
+    description: {
+      type: DataTypes.STRING,
       allowNull: false
     },
-    time: {
-      type: DataTypes.TIME,
-      allowNull: false
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'zlecenie'
     },
-    client_id: {
+    user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -34,13 +35,13 @@ module.exports = (sequelize) => {
       defaultValue: DataTypes.NOW
     }
   }, {
-    tableName: 'appointments',
+    tableName: 'orders',
     underscored: true
   });
 
-  Appointment.associate = (models) => {
-    Appointment.belongsTo(models.User, { foreignKey: 'client_id' });
+  Order.associate = (models) => {
+    Order.belongsTo(models.User, { foreignKey: 'user_id' });
   };
 
-  return Appointment;
+  return Order;
 };

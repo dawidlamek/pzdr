@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { getClientOrders, scheduleAppointment, } from '../services/api';
 
 const ClientPanel = () => {
     const [orders, setOrders] = useState([]);
@@ -7,15 +6,15 @@ const ClientPanel = () => {
 
     useEffect(() => {
         // Fetch client orders from the backend
-        getClientOrders().then(data => setOrders(data));
+        // getClientOrders().then(data => setOrders(data));
     }, []);
 
     const handleScheduleAppointment = (e) => {
-        e.preventDefault();
-        scheduleAppointment(appointment).then(newAppointment => {
-            setOrders([...orders, newAppointment]);
-            setAppointment({ date: '', time: '' });
-        });
+        // e.preventDefault();
+        // scheduleAppointment(appointment).then(newAppointment => {
+        //     setOrders([...orders, newAppointment]);
+        //     setAppointment({ date: '', time: '' });
+        // });
     };
 
     const handleDownloadInvoice = (orderId) => {
