@@ -29,13 +29,13 @@ exports.updateOrderStatus = async (req, res) => {
 };
 
 exports.createOrder = async (req, res) => {
-    const { description, status, user_id } = req.body;
+    const { description, status, userId } = req.body;
 
     try {
-        const newOrder = await db.Order.create({ description, status, user_id });
+        const newOrder = await db.Order.create({ description, status, user_id: userId });
         res.status(201).json(newOrder);
     } catch (error) {
         console.error('Error creating order:', error);
         res.status(500).json({ message: error.message });
     }
-};
+}
