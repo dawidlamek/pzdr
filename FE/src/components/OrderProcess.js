@@ -1,30 +1,56 @@
 import React, { useState, useEffect } from 'react';
-import { getOrders, updateOrderStatus } from '../services/api';
+import { getOrders} from '../services/api';
 
-const OrderProcess = () => {
+const Orders = () => {
     const [orders, setOrders] = useState([]);
+    const [newOrder, setNewOrder] = useState({ description: '', status: '', userId: '' });
 
     useEffect(() => {
-        // Fetch orders data from the backend
         getOrders().then(data => setOrders(data));
     }, []);
 
-    const handleUpdateStatus = (orderId, status) => {
-        updateOrderStatus(orderId, status).then(updatedOrder => {
-            setOrders(orders.map(order => (order.id === orderId ? updatedOrder : order)));
-        });
+    const handleCreateOrder = (e) => {
+        // e.preventDefault();
+        // createOrder(newOrder).then(order => {
+        //     setOrders([...orders, order]);
+        //     setNewOrder({ description: '', status: '', userId: '' });
+        // });
     };
 
     return (
         <div>
-            <h1>Order Process</h1>
+            <h1>Orders</h1>
+            <form onSubmit={handleCreateOrder}>
+                <label>
+                    Description:
+                    <input
+                        type="text"
+                        value={newOrder.description}
+                        onChange={(e) => setNewOrder({ ...newOrder, description: e.target.value })}
+                    />
+                </label>
+                <label>
+                    Status:
+                    <input
+                        type="text"
+                        value={newOrder.status}
+                        onChange={(e) => setNewOrder({ ...newOrder, status: e.target.value })}
+                    />
+                </label>
+                <label>
+                    User ID:
+                    <input
+                        type="text"
+                        value={newOrder.userId}
+                        onChange={(e) => setNewOrder({ ...newOrder, userId: e.target.value })}
+                    />
+                </label>
+                <button type="submit">Create Order</button>
+            </form>
             <ul>
                 {orders.map(order => (
                     <li key={order.id}>
-                        {order.description} - Status: {order.status}
-                        <button onClick={() => handleUpdateStatus(order.id, 'In Progress')}>Start</button>
-                        <button onClick={() => handleUpdateStatus(order.id, 'Completed')}>Complete</button>
-                        <button onClick={() => handleUpdateStatus(order.id, 'Rejected')}>Reject</button>
+                        {order.description} - Status: {order.status} - User ID: {order.userId}
                     </li>
                 ))}
             </ul>
@@ -32,4 +58,4 @@ const OrderProcess = () => {
     );
 };
 
-export default OrderProcess;
+export default Orders;

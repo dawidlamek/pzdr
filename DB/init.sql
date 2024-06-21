@@ -1,8 +1,13 @@
 -- Create database if it does not exist
 CREATE DATABASE IF NOT EXISTS car_service;
 
--- Use the database
 USE car_service;
+
+-- Drop tables if they exist to avoid conflicts
+DROP TABLE IF EXISTS appointments;
+DROP TABLE IF EXISTS parts;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS roles;
 
 -- Create tables
 CREATE TABLE roles (
@@ -25,26 +30,18 @@ CREATE TABLE parts (
     price DECIMAL(10, 2) NOT NULL
 );
 
-CREATE TABLE orders (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    description TEXT NOT NULL,
-    status VARCHAR(50) NOT NULL,
-    user_id INT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
 CREATE TABLE appointments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     client_id INT,
-    date DATE NOT NULL,
+    date DATETIME NOT NULL,
     time TIME NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (client_id) REFERENCES users(id)
 );
 
 -- Insert roles
-INSERT INTO roles (name) VALUES ('admin');
-INSERT INTO roles (name) VALUES ('serwis');
-INSERT INTO roles (name) VALUES ('klient');
+INSERT INTO roles (name) VALUES ('admin'), ('serwis'), ('klient');
 
 -- Insert users with hashed passwords
 INSERT INTO users (username, password, role_id) VALUES 
@@ -52,18 +49,13 @@ INSERT INTO users (username, password, role_id) VALUES
 ('service1', '$2a$10$0hp2C7Jurq/BjE311qsl.eKYPhDdvo0K9.8sZjKT/rKzlvAeRZEEO', 2), -- 'password2'
 ('client1', '$2a$10$yCHwKsp7ANhkoHj98eR4nOkK43R9AJDCrqADAKZINGfKhNHA83OM.', 3); -- 'password3'
 
--- Passwords are hashed versions of 'password1', 'password2', and 'password3' respectively.
-
+-- Insert parts
 INSERT INTO parts (name, quantity, price) VALUES 
 ('Klocki hamulcowe', 100, 25.50),
 ('Filtr oleju', 150, 7.25),
 ('Filtr powietrza', 200, 15.00);
 
-INSERT INTO orders (description, status, user_id) VALUES 
-('Wymień klocki hamulcowe', 'W toku', 2),
-('Zmień filtr oleju', 'W trakcie', 2),
-('Wymień air filter', 'Completed', 3);
-
+-- Insert appointments (make sure client IDs match existing user IDs)
 INSERT INTO appointments (client_id, date, time) VALUES 
-(4, '2024-06-20', '10:00:00'),
-(5, '2024-06-21', '14:00:00');
+(3, '2024-06-20 10:00:00', '10:00:00'), -- client1
+(3, '2024-06-21 14:00:00', '14:00:00'); -- client1

@@ -1,22 +1,6 @@
 version: '3.8'
 
 services:
-
-  db:
-    build:
-      context: ./DB
-      dockerfile: Dockerfile 
-    container_name: car_service_db
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: car_service
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-    ports:
-      - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-
   frontend:
     build:
       context: ./FE
@@ -24,6 +8,8 @@ services:
     container_name: car_service_frontend
     ports:
       - "80:80"
+    volumes:
+      - ./FE:/usr/src/app
     depends_on:
       - backend
 
@@ -39,10 +25,21 @@ services:
       DATABASE_NAME: car_service
     ports:
       - "8080:8080"
+    volumes:
+      - ./BE:/usr/src/app
     depends_on:
       - db
+    entrypoint: ["./wait-for-it.sh", "db:3306", "--timeout=60", "--", "node", "src/app.js"]
 
-
+  db:
+    build:
+      context: ./DB
+      dockerfile: Dockerfile 
+    container_name: car_service_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
 
 volumes:
   db_data:

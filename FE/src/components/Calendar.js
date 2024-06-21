@@ -3,58 +3,94 @@ import { getAppointments, scheduleAppointment } from '../services/api';
 
 const Calendar = () => {
     const [appointments, setAppointments] = useState([]);
-    const [newAppointment, setNewAppointment] = useState({ date: '', time: '', client: '' });
+    const [newAppointment, setNewAppointment] = useState({ date: '', time: '', clientId: '' });
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
 
     useEffect(() => {
         // Fetch appointments data from the backend
-        getAppointments().then(data => setAppointments(data));
+        getAppointments()
+            .then(data => setAppointments(data))
+            .catch(err => setError(err.message));
     }, []);
 
     const handleScheduleAppointment = (e) => {
         e.preventDefault();
-        scheduleAppointment(newAppointment).then(appointment => {
-            setAppointments([...appointments, appointment]);
-            setNewAppointment({ date: '', time: '', client: '' });
-        });
+        // Convert clientId to an integer
+        const appointmentToSchedule = {
+            ...newAppointment,
+            clientId: parseInt(newAppointment.clientId, 10)
+        };
+        
+        scheduleAppointment(appointmentToSchedule)
+            .then(appointment => {
+                setAppointments([...appointments, appointment]);
+                setNewAppointment({ date: '', time: '', clientId: '' });
+                setError(null);
+                setSuccess('Appointment scheduled successfully');
+            })
+            .catch(err => {
+                setSuccess(null);
+                setError(err.message);
+            });
     };
 
     return (
         <div>
             <h1>Calendar</h1>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {success && <p style={{ color: 'green' }}>{success}</p>}
             <form onSubmit={handleScheduleAppointment}>
-                <label>
-                    Client:
-                    <input
-                        type="text"
-                        value={newAppointment.client}
-                        onChange={(e) => setNewAppointment({ ...newAppointment, client: e.target.value })}
-                    />
-                </label>
-                <label>
-                    Date:
-                    <input
-                        type="date"
-                        value={newAppointment.date}
-                        onChange={(e) => setNewAppointment({ ...newAppointment, date: e.target.value })}
-                    />
-                </label>
-                <label>
-                    Time:
-                    <input
-                        type="time"
-                        value={newAppointment.time}
-                        onChange={(e) => setNewAppointment({ ...newAppointment, time: e.target.value })}
-                    />
-                </label>
+                <div>
+                    <label>
+                        Client ID:
+                        <input
+                            type="number"
+                            value={newAppointment.clientId}
+                            onChange={(e) => setNewAppointment({ ...newAppointment, clientId: e.target.value })}
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Date:
+                        <input
+                            type="date"
+                            value={newAppointment.date}
+                            onChange={(e) => setNewAppointment({ ...newAppointment, date: e.target.value })}
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Time:
+                        <input
+                            type="time"
+                            value={newAppointment.time}
+                            onChange={(e) => setNewAppointment({ ...newAppointment, time: e.target.value })}
+                        />
+                    </label>
+                </div>
                 <button type="submit">Schedule Appointment</button>
             </form>
-            <ul>
-                {appointments.map(appointment => (
-                    <li key={appointment.id}>
-                        {appointment.client} - {appointment.date} {appointment.time}
-                    </li>
-                ))}
-            </ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Client ID</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {appointments.map(appointment => (
+                        <tr key={appointment.id}>
+                            <td>{appointment.clientId}</td>
+                            <td>{new Date(appointment.date).toLocaleDateString()}</td>
+                            <td>{appointment.time}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 };

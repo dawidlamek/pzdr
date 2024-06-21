@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getClientOrders, scheduleAppointment, getInvoice } from '../services/api';
+import { getClientOrders, scheduleAppointment, } from '../services/api';
 
 const ClientPanel = () => {
     const [orders, setOrders] = useState([]);
@@ -19,10 +19,10 @@ const ClientPanel = () => {
     };
 
     const handleDownloadInvoice = (orderId) => {
-        getInvoice(orderId).then(invoice => {
-            // Handle invoice download
-            console.log(invoice);
-        });
+        // getInvoice(orderId).then(invoice => {
+        //     // Handle invoice download
+        //     console.log(invoice);
+        // });
     };
 
     return (

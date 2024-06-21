@@ -29,6 +29,63 @@ export const getInventory = async () => {
     return await response.json();
 };
 
+export const addPart = async (part) => {
+    const response = await fetch(`${API_URL}/inventory`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(part),
+        credentials: 'include' // Include credentials in the request
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to add part');
+    }
+
+    return await response.json();
+};
+
+export const updatePartQuantity = async (partId, quantity) => {
+    const response = await fetch(`${API_URL}/inventory/${partId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ quantity }),
+        credentials: 'include' // Include credentials in the request
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to update part quantity');
+    }
+
+    return await response.json();
+};
+
+export const getAppointments = async () => {
+    const response = await fetch(`${API_URL}/appointments`, {
+        credentials: 'include' // Ensure credentials are included
+    });
+    if (!response.ok) {
+        throw new Error('Failed to fetch appointments');
+    }
+    return await response.json();
+};
+
+export const scheduleAppointment = async (appointment) => {
+    const response = await fetch(`${API_URL}/appointments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(appointment),
+        credentials: 'include' // Ensure credentials are included
+    });
+    if (!response.ok) {
+        throw new Error('Failed to schedule appointment');
+    }
+    return await response.json();
+};
+
 /// WORKING
 
 export const getServiceOrders = async () => {
@@ -50,42 +107,8 @@ export const getClientOrders = async () => {
     return await response.json();
 };
 
-export const scheduleAppointment = async (appointment) => {
-    const response = await fetch(`${API_URL}/appointments`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(appointment),
-    });
-    return await response.json();
-};
-
 export const getInvoice = async (orderId) => {
     const response = await fetch(`${API_URL}/orders/${orderId}/invoice`);
-    return await response.json();
-};
-
-
-
-export const addPart = async (part) => {
-    const response = await fetch(`${API_URL}/inventory`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(part),
-    });
-    return await response.json();
-};
-
-export const updatePartQuantity = async (partId, quantity) => {
-    const response = await fetch(`${API_URL}/inventory/${partId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ quantity }),
-    });
-    return await response.json();
-};
-
-export const getAppointments = async () => {
-    const response = await fetch(`${API_URL}/appointments`);
     return await response.json();
 };
 
